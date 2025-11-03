@@ -3,9 +3,9 @@ import { Button } from "../ui/button";
 
 export default function Header() {
   return (
-    <div className="flex items-center justify-between fixed top-0 left-0 right-0 bg-white">
+    <div className="fixed top-0 right-0 left-0 flex items-center justify-between bg-white">
       <div className="flex-1"></div>
-      <div className="flex flex-1 items-center justify-center cursor-pointer">
+      <div className="flex flex-1 cursor-pointer items-center justify-center md:hidden">
         <svg
           aria-label="Threads"
           className="size-8"

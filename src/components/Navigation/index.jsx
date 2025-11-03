@@ -6,7 +6,7 @@ import { ChartBarIncreasing } from "lucide-react";
 export default function Navigation() {
   return (
     <div>
-      <nav className="fixed right-0 bottom-0 left-0 flex bg-white md:top-0 md:right-auto md:bottom-0 md:left-0 md:flex-col">
+      <nav className="fixed right-0 bottom-0 left-0 flex bg-white md:top-0 md:right-auto md:bottom-0 md:left-0 md:flex-col md:p-2">
         <div className="hidden items-center md:flex md:flex-0 md:flex-col">
           <svg
             aria-label="Threads"
@@ -29,13 +29,13 @@ export default function Navigation() {
                 child.isShowInNav && (
                   <NavLink
                     className={
-                      "group m-1 flex h-10.5 flex-1 items-center justify-center rounded-xl border-0 text-[rgb(184,184,184)] md:mt-[6px] md:mb-[6px] md:h-15 md:w-12 md:flex-none md:gap-1"
+                      "group m-1 flex h-10.5 md:w-15 md:h-15 flex-1 items-center justify-center rounded-xl border-0 text-[rgb(184,184,184)] md:mt-[6px] md:mb-[6px] md:h-15 md:w-12 md:flex-none md:gap-1"
                     }
                     key={index}
                     to={child.path}
                   >
                     <Icon
-                      className={`group-[.active]:text-black ${
+                      className={`group-[.active]:text-black size-6 ${
                         child.isFill ? "group-[.active]:fill-black" : ""
                       } `}
                     />
@@ -48,7 +48,7 @@ export default function Navigation() {
         <div className="hidden items-center justify-end md:flex md:flex-0 md:flex-col">
           <Button
             variant={"ghost"}
-            className={"group mb-4 size-12 cursor-pointer"}
+            className={"group mb-4 size-15 cursor-pointer"}
           >
             <ChartBarIncreasing className="size-6 text-[rgb(184,184,184)] group-[:hover]:text-black" />
           </Button>

@@ -5,10 +5,10 @@ import Following from "../Following/Following";
 
 const NavInHome = ({ page, setPage }) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className=" flex items-center justify-center md:hidden">
       <Button
         onClick={() => setPage("forYou")}
-        className={`transition-all text-[#b8b8b8] flex-1 border-b-2 rounded-b-none rounded-t-none cursor-pointer  ${
+        className={`transition-all h-12 w-68 text-[#b8b8b8] flex-1 border-b-2 rounded-b-none rounded-t-none cursor-pointer  ${
           page === "forYou" ? " border-black text-black" : ""
         } `}
         variant={"ghost"}
@@ -17,7 +17,7 @@ const NavInHome = ({ page, setPage }) => {
       </Button>
       <Button
         onClick={() => setPage("following")}
-        className={`transition-all  text-[#b8b8b8] flex-1 border-b-2 rounded-b-none rounded-t-none cursor-pointer ${
+        className={`transition-all h-12 w-68 text-[#b8b8b8] flex-1 border-b-2 rounded-b-none rounded-t-none cursor-pointer ${
           page !== "forYou" ? " border-black text-black" : ""
         } `}
         variant={"ghost"}
@@ -39,7 +39,7 @@ export default function Home() {
           </div>
 
           <div>
-            <ForYou />
+            <ForYou/>
           </div>
         </div>
       </>

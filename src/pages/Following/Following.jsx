@@ -1,9 +1,19 @@
-import React from 'react'
+import PostItem from "@/components/PostItem/PostItem";
+import { mockPostsFollowing } from "@/mockDatas/mockPostsFollowing";
+import React from "react";
 
 function Following() {
   return (
-    <div>Following</div>
-  )
+    <div>
+      {mockPostsFollowing.map((post) => {
+        return (
+          <>
+            <PostItem key={post.id} {...post} />
+          </>
+        );
+      })}
+    </div>
+  );
 }
 
-export default Following
+export default Following;
