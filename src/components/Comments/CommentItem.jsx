@@ -8,8 +8,7 @@ import {
   Send as SendIcon,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import ReplyModal from "../ReplyModal";
-import { useNavigate } from "react-router";
+import ReplyModal from "../Modals/ReplyModal";
 
 function CommentItem({ postId, userId, id, name, body }) {
   // const navigate = useNavigate();
@@ -49,7 +48,7 @@ function CommentItem({ postId, userId, id, name, body }) {
                 <div className="text-sm text-gray-500">{"10h"}</div>
               </div>
               {body && (
-                <div className="body mt-1 text-sm">
+                <div className="body mt-1">
                   {name}: {body}
                 </div>
               )}

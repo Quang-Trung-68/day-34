@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Card } from "../ui/card";
 
-import ReplyModal from "../Comments/ReplyModal";
+import ReplyModal from "../Modals/ReplyModal";
 
 function PostItem({ userId, id, title, body, isPermitDetailPost }) {
   const navigate = useNavigate();
@@ -54,8 +54,11 @@ function PostItem({ userId, id, title, body, isPermitDetailPost }) {
               <div
                 className={`flex-1 ${isPermitDetailPost ? "cursor-pointer" : "cursor-default"}`}
               >
-                <div onClick={handleToUserProfile} className="username flex items-center gap-2">
-                  <div className="font-semibold cursor-pointer hover:underline">
+                <div
+                  onClick={handleToUserProfile}
+                  className="username flex items-center gap-2"
+                >
+                  <div className="cursor-pointer font-semibold hover:underline">
                     {username}
                   </div>
                   <div className="text-sm text-gray-500">{"10h"}</div>
@@ -63,7 +66,7 @@ function PostItem({ userId, id, title, body, isPermitDetailPost }) {
                 {body && (
                   <div
                     onClick={handleToPostDetail}
-                    className="body mt-1 text-sm "
+                    className="body mt-1"
                   >
                     {title}: {body}
                   </div>

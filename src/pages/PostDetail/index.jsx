@@ -1,7 +1,7 @@
-import PostItem from "@/components/PostItem";
+import CommentItem from "@/components/Comments/CommentItem";
+import PostItem from "@/components/Posts/PostItem";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import CommentItem from "@/components/Comments/CommentItem";
 
 export default function PostDetail() {
   const { id, userId } = useParams();

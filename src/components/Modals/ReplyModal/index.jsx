@@ -57,7 +57,7 @@ const ReplyModal = forwardRef((props,ref) => {
                     <div>
                       <Textarea
                         className={
-                          "border-0 w-100 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                          "border-0 resize-none w-100 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
                         }
                         placeholder={`Reply to ${"user..."}...`}
                       />
