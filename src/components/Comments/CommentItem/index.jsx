@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Heart as LikeIcon,
@@ -9,8 +9,15 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ReplyModal from "../ReplyModal";
+import { useNavigate } from "react-router";
 
-function CommentItem({ postId, id, name, body }) {
+function CommentItem({ postId, userId, id, name, body }) {
+  // const navigate = useNavigate();
+
+  // const handleToUserProfile = () => {
+  //   navigate(`/@${userId}`);
+  // };
+
   const username = "user_" + Math.floor(Math.random() * 100);
   const urlImage =
     "https://picsum.photos/600/400?random=" + Math.floor(Math.random() * 10);

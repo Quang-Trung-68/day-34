@@ -2,6 +2,9 @@ import NavigateInHome from "@/components/Navigation/NavigateInHome";
 import PostLists from "@/components/Posts/PostLists";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -39,6 +42,38 @@ export default function Home() {
           </div>
         ) : (
           <div>
+            <div className="flex items-center justify-between p-5">
+              <div className="flex items-center justify-center gap-2">
+                <div>
+                  <Avatar className={"size-9"}>
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@dqt_2309"
+                    />
+                    <AvatarFallback>QT</AvatarFallback>
+                  </Avatar>
+                </div>
+                <div>
+                  <Input
+                    type={"text"}
+                    className={
+                      "border-0 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                    }
+                    placeholder={`What's news ?`}
+                  />
+                </div>
+              </div>
+              <div>
+                <Button
+                  variant="ghost"
+                  className={
+                    "cursor-pointer rounded-3xl bg-black font-semibold text-white"
+                  }
+                >
+                  Post
+                </Button>
+              </div>
+            </div>
             <PostLists isPermitDetailPost={true} posts={posts} />
           </div>
         )}

@@ -1,16 +1,21 @@
 import { ROUTES } from "@/routes";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import { ChartBarIncreasing } from "lucide-react";
 
 export default function Navigation() {
+  const navigate = useNavigate();
+
+  const navigateToHome = () => {
+    navigate("/");
+  };
   return (
     <div>
       <nav className="fixed right-0 bottom-0 left-0 flex bg-white md:top-0 md:right-auto md:bottom-0 md:left-0 md:flex-col md:p-2">
-        <div className="hidden items-center md:flex md:flex-0 md:flex-col">
+        <div onClick={navigateToHome} className="hidden items-center md:flex md:flex-0 md:flex-col">
           <svg
             aria-label="Threads"
-            className="mt-3 size-8"
+            className="mt-3 size-8 cursor-pointer transition-all hover:scale-110"
             fill="var(--barcelona-primary-icon)"
             height="100%"
             role="img"

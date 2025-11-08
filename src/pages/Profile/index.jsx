@@ -30,14 +30,14 @@ const ThreadActionItem = ({ icon, title, desc, action }) => {
   );
 };
 
-export default function Profile() {
+export default function Profile({username}) {
   return (
     <>
       <div className="flex flex-col">
         <div className="flex flex-col gap-5 p-5">
           <div className={"flex flex-row items-center justify-between"}>
             <div>
-              <div className="text-2xl font-bold">Quang Trung</div>
+              <div className="text-2xl font-bold">Quang Trung</div> 
               <div>dqt_2309</div>
             </div>
             <div>

@@ -19,6 +19,11 @@ function PostItem({ userId, id, title, body, isPermitDetailPost }) {
       navigate(`/@${userId}/post/${id}`);
     }
   };
+
+  const handleToUserProfile = () => {
+    navigate(`/@${userId}`);
+  };
+
   const username = "user_" + Math.floor(Math.random() * 100);
   const urlImage =
     "https://picsum.photos/600/400?random=" + Math.floor(Math.random() * 10);
@@ -32,7 +37,7 @@ function PostItem({ userId, id, title, body, isPermitDetailPost }) {
     <Card className="flex flex-col rounded-none border-b p-3 md:p-6">
       <div>
         <div className="flex gap-2">
-          <div>
+          <div onClick={handleToUserProfile}>
             <Avatar className="size-9">
               <AvatarImage
                 src={
@@ -48,14 +53,18 @@ function PostItem({ userId, id, title, body, isPermitDetailPost }) {
             <div className="content flex justify-between">
               <div
                 className={`flex-1 ${isPermitDetailPost ? "cursor-pointer" : "cursor-default"}`}
-                onClick={handleToPostDetail}
               >
-                <div className="username flex items-center gap-2">
-                  <div className="font-semibold">{username}</div>
+                <div onClick={handleToUserProfile} className="username flex items-center gap-2">
+                  <div className="font-semibold cursor-pointer hover:underline">
+                    {username}
+                  </div>
                   <div className="text-sm text-gray-500">{"10h"}</div>
                 </div>
                 {body && (
-                  <div className="body mt-1 text-sm">
+                  <div
+                    onClick={handleToPostDetail}
+                    className="body mt-1 text-sm "
+                  >
                     {title}: {body}
                   </div>
                 )}
