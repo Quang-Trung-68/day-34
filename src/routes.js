@@ -1,7 +1,7 @@
 import { PATHS } from "@/configs/paths.js";
 import { LAYOUTS } from "@/configs/layouts.js";
 
-import Home from "@pages/Home";
+import Home from "@/pages/HomePage";
 import Search from "@pages/Search";
 import Create from "@components/Create";
 import Activity from "@/pages/Activity";
@@ -14,8 +14,8 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { Search as SearchIcon } from "lucide-react";
-import PostDetail from "@pages/PostDetail";
-import UserProfile from "@pages/UserProfile";
+import PostDetail from "@/pages/PostDetailPage";
+import UserProfile from "@/pages/ProfilePage";
 import Following from "./pages/Following/Following";
 import GhostPosts from "./pages/GhostPosts";
 import ForYou from "./pages/ForYou/ForYou";
