@@ -35,7 +35,7 @@ export default function UserProfile() {
         const data = await response.json();
         setPosts(data);
       } catch (error) {
-        throw new error();
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -51,7 +51,7 @@ export default function UserProfile() {
         const data = await response.json();
         setUserData(data);
       } catch (error) {
-        throw new error();
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -160,7 +160,9 @@ export default function UserProfile() {
                     <Spinner />
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center text-gray-500 text-sm">No replies yet.</div>
+                  <div className="flex items-center justify-center text-sm text-gray-500">
+                    No replies yet.
+                  </div>
                 )}
               </div>
             )}
@@ -171,7 +173,9 @@ export default function UserProfile() {
                     <Spinner />
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center text-gray-500 text-sm">No media yet.</div>
+                  <div className="flex items-center justify-center text-sm text-gray-500">
+                    No media yet.
+                  </div>
                 )}
               </div>
             )}
@@ -182,7 +186,9 @@ export default function UserProfile() {
                     <Spinner />
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center text-gray-500 text-sm">No reposts yet.</div>
+                  <div className="flex items-center justify-center text-sm text-gray-500">
+                    No reposts yet.
+                  </div>
                 )}
               </div>
             )}

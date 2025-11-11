@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function PostDetail() {
-  const { id, userId } = useParams();
+  const { id } = useParams();
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
 
@@ -19,7 +19,7 @@ export default function PostDetail() {
         const data = await response.json();
         setPost(data);
       } catch (error) {
-        throw new error();
+        console.log(error);
       }
     };
     const fetchComments = async () => {
@@ -31,10 +31,9 @@ export default function PostDetail() {
         if (!response.ok) throw new Error("Failed to fetch comments");
 
         const data = await response.json();
-        console.log(data);
         setComments(data);
       } catch (error) {
-        throw new error();
+        console.log(error);
       }
     };
     fetchPost();

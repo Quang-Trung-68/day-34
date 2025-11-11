@@ -18,7 +18,7 @@ export default function Following() {
         const data = await response.json();
         setPosts(data);
       } catch (error) {
-        throw new error();
+        console.log(error);
       } finally {
         setLoading(false);
       }
