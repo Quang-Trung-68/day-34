@@ -6,14 +6,14 @@ import { Spinner } from "@/components/ui/spinner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import useAuth from "@/hooks/useAuth";
+import Cookies from "js-cookie";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { user } = useAuth();
-
+  const user = JSON.parse(Cookies.get("userInfo"));
+  const { firstName, lastName } = user;
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -63,7 +63,7 @@ export default function Home() {
                     className={
                       "border-0 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
                     }
-                    placeholder={`What's news ?`}
+                    placeholder={`Hi ${firstName} ${lastName}, What's news ?`}
                   />
                 </div>
               </div>

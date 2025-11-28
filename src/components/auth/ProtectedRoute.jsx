@@ -7,8 +7,8 @@ const ProtectedRoute = ({ children }) => {
   if (isLoading) {
     return <Loading />;
   }
-  if (isError && !isSuccess) return <Navigate to="login" />;
-  if (user) return children;
+  if (isError && !isSuccess && !user) return <Navigate to="/login" />;
+  return children;
 };
 
 export default ProtectedRoute;

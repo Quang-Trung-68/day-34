@@ -6,6 +6,8 @@ import { useNavigate } from "react-router";
 
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 export default function Login() {
   const {
@@ -18,6 +20,8 @@ export default function Login() {
 
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const [loginApi, { isError, isLoading }] = useLoginMutation();
 
   const onSubmit = async (credentials) => {
@@ -26,8 +30,8 @@ export default function Login() {
       // save response data
       Cookies.set("access_token", response.data.access_token);
       Cookies.set("refresh_token", response.data.refresh_token);
-      toast.success("Login successfully!");
       navigate("/");
+      toast.success("Login successfully!");
     } catch (error) {
       console.log(error);
       toast.error("Error to login, please try again");
@@ -58,9 +62,7 @@ export default function Login() {
       {/* Main login container */}
       <div className="z-10 w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="mb-8 text-2xl font-semibold">
-            Log in with your Instagram account
-          </h1>
+          <h1 className="mb-8 text-2xl font-semibold">Login to your account</h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Email */}
@@ -80,9 +82,9 @@ export default function Login() {
             </div>
 
             {/* Password */}
-            <div className="text-left">
+            <div className="relative text-left">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 defaultValue={"12345678"}
                 {...register("password")}
@@ -93,6 +95,12 @@ export default function Login() {
                   {errors.password.message}
                 </span>
               )}
+              <span
+                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </span>
             </div>
 
             <button
@@ -150,7 +158,10 @@ export default function Login() {
           </button>
 
           <div className="mt-6">
-            <button className="text-sm text-gray-600 hover:text-gray-800">
+            <button
+              onClick={() => navigate("/register")}
+              className="cursor-pointer text-sm text-gray-600 hover:text-gray-800"
+            >
               Don't have an account?{" "}
               <span className="font-medium">Sign up</span>
             </button>

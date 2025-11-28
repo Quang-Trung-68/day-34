@@ -1,7 +1,14 @@
-import { useGetMeQuery } from "@/services/auth";
+import { useGetCurrentUserQuery } from "@/services/auth";
+import Cookies from "js-cookie";
 
 const useAuth = () => {
-  const { data: user, isLoading, isError, isSuccess } = useGetMeQuery();
+  const {
+    data: user,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useGetCurrentUserQuery();
+  Cookies.set("userInfo", JSON.stringify(user || {}));
   return { user, isLoading, isError, isSuccess };
 };
 

@@ -4,6 +4,7 @@ import baseQuery from "./baseQuery";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQuery(),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     // Register user
     register: builder.mutation({
@@ -21,16 +22,19 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
+      invalidatesTags: ["User"],
     }),
 
     // Get me
-    getMe: builder.query({
+    getCurrentUser: builder.query({
       query: () => ({
         url: `/auth/me`,
         method: "GET",
       }),
+      providesTags: ["User"],
     }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetMeQuery } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGetCurrentUserQuery } =
+  authApi;

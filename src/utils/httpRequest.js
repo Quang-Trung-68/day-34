@@ -15,6 +15,11 @@ httpRequest.interceptors.request.use((config) => {
   return config;
 });
 
-httpRequest.interceptors.response.use((response) => response.data);
+httpRequest.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 export default httpRequest;

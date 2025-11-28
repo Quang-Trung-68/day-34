@@ -5,7 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
+import { Eye, EyeOff } from "lucide-react";
 // dt1234@gmail.com 12345678
 //
 export default function Register() {
@@ -17,6 +19,8 @@ export default function Register() {
     resolver: zodResolver(registerSchema),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const [registerApi, { isError, isLoading }] = useRegisterMutation();
@@ -24,13 +28,20 @@ export default function Register() {
   const onSubmit = async (credentials) => {
     try {
       const response = await registerApi(credentials);
-      Cookies.set("access_token", response.data.access_token);
-      Cookies.set("refresh_token", response.data.refresh_token);
-      toast.success("Register successfully!");
-      navigate("/");
+      if (!response.error) {
+        Cookies.set("access_token", response.data.access_token);
+        Cookies.set("refresh_token", response.data.refresh_token);
+        toast.success("Register successfully!");
+        navigate("/");
+      } else {
+        const entries = Object.entries(response.error.data.message);
+        for (const [_, [key, value]] of Object.entries(entries)) {
+          toast.error(`${value}`);
+        }
+      }
     } catch (error) {
-      console.log(error);
       toast.error("Error to register, please try again");
+      console.log(error);
     }
   };
 
@@ -58,7 +69,7 @@ export default function Register() {
       {/* Main register container */}
       <div className="z-10 w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="mb-8 text-2xl font-semibold">Đăng ký tài khoản</h1>
+          <h1 className="mb-8 text-2xl font-semibold">Register an account</h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* First Name */}
@@ -107,9 +118,9 @@ export default function Register() {
             </div>
 
             {/* Password */}
-            <div className="text-left">
+            <div className="relative text-left">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="123456"
                 {...register("password")}
                 className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
@@ -119,12 +130,18 @@ export default function Register() {
                   {errors.password.message}
                 </span>
               )}
+              <span
+                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </span>
             </div>
 
             {/* Confirm Password */}
-            <div className="text-left">
+            <div className="relative text-left">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="123456"
                 {...register("password_confirmation")}
                 className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-colors focus:border-gray-300 focus:outline-none"
@@ -134,13 +151,19 @@ export default function Register() {
                   {errors.password_confirmation.message}
                 </span>
               )}
+              <span
+                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </span>
             </div>
 
             <button
               type="submit"
               className="mt-6 w-full cursor-pointer rounded-xl bg-black py-3 font-medium text-white transition-colors hover:bg-gray-800"
             >
-              Đăng ký
+              Sign up
             </button>
           </form>
 
@@ -184,7 +207,10 @@ export default function Register() {
           </button>
 
           <div className="mt-6">
-            <button className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
+            <button
+              onClick={() => navigate("/login")}
+              className="cursor-pointer text-sm text-gray-600 hover:text-gray-800"
+            >
               <span className="cursor-pointer font-medium">
                 Already have an account? Log in
               </span>
