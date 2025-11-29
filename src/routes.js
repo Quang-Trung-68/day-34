@@ -1,7 +1,7 @@
 import { PATHS } from "@/configs/paths.js";
 import { LAYOUTS } from "@/configs/layouts.js";
 
-import Home from "@/pages/HomePage";
+import Home from "@/pages/Home";
 import Search from "@pages/Search";
 import Create from "@components/Create";
 import Activity from "@/pages/Activity";

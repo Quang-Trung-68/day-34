@@ -13,6 +13,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
+      invalidatesTags: ["User"],
     }),
 
     // Login user

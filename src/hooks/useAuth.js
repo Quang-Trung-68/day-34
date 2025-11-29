@@ -7,6 +7,7 @@ const useAuth = () => {
     isLoading,
     isError,
     isSuccess,
+    isFetching,
   } = useGetCurrentUserQuery();
   Cookies.set("userInfo", JSON.stringify(user || {}));
   return { user, isLoading, isError, isSuccess };

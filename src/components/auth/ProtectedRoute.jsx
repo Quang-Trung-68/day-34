@@ -3,11 +3,11 @@ import { Navigate } from "react-router";
 import useAuth from "@/hooks/useAuth";
 
 const ProtectedRoute = ({ children }) => {
-  const { user, isLoading, isError, isSuccess } = useAuth();
-  if (isLoading) {
+  const { user, isLoading, isError, isSuccess, isFetching } = useAuth();
+  if (isLoading || isFetching) {
     return <Loading />;
   }
-  if (isError && !isSuccess && !user) return <Navigate to="/login" />;
+  if (isError || !isSuccess || !user) return <Navigate to="/login" />;
   return children;
 };
 
