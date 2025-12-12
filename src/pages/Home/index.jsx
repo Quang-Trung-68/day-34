@@ -11,13 +11,17 @@ import { Button } from "@/components/Common/ui/button";
 import useAuth from "@/hooks/useAuth";
 import { Instagram } from "lucide-react";
 import PostCard from "@/components/post/PostCard";
+import { useGetFeedQuery } from "@/services/post";
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const { user } = useAuth();
-  const { firstName, lastName } = user;
+  const {
+    data: posts,
+    isLoading,
+    isError,
+  } = useGetFeedQuery({ type: "for_you", page: 1 });
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -49,7 +53,7 @@ export default function Home() {
           </div>
 
           {/* Visible Border connecting the masks */}
-          <div className="bg-border absolute right-5 -bottom-[1px] left-5 z-10 h-[2px]" />
+          <div className="bg-border absolute right-5 -bottom-px left-5 z-10 h-0.5" />
 
           {/* Hanging Masks to create "Rounded Top" effect over scrolling content */}
           <div className="pointer-events-none absolute top-full left-0 h-6 w-6">
@@ -75,9 +79,10 @@ export default function Home() {
 
         {/* Main Content - Flows naturally with window scroll */}
         <div className="relative z-0 flex min-h-screen w-full flex-col gap-1 bg-white">
-          {posts.map((post) => (
-            <PostCard {...post} isPermitDetailPost={true} />
-          ))}
+          {posts &&
+            posts.map((post) => (
+              <PostCard {...post} isPermitDetailPost={true} />
+            ))}
         </div>
       </div>
     </div>

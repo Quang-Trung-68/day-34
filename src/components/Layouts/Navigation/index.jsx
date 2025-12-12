@@ -2,17 +2,33 @@ import { ROUTES } from "@/routes";
 import { NavLink, useNavigate } from "react-router";
 import { Button } from "@/components/Common/ui/button";
 import { ChartBarIncreasing } from "lucide-react";
+import useAuth from "@/hooks/useAuth";
+import { useState } from "react";
+import LoginActionModal from "@/components/Common/Modals/LoginActionModal";
 
 export default function Navigation() {
   const navigate = useNavigate();
-
+  const [open, setOpen] = useState(false);
   const navigateToHome = () => {
     navigate("/");
   };
+
+  const { user } = useAuth();
+  const handleUserAuth = (event, isPrivate) => {
+    if (isPrivate && !user) {
+      event.preventDefault();
+      console.log("Set modal open");
+      setOpen(true);
+    }
+  };
+
   return (
     <div className="z-100">
       <nav className="fixed right-0 bottom-0 left-0 flex bg-white md:top-0 md:right-auto md:bottom-0 md:left-0 md:flex-col md:p-2">
-        <div onClick={navigateToHome} className="hidden items-center md:flex md:flex-0 md:flex-col">
+        <div
+          onClick={navigateToHome}
+          className="hidden items-center md:flex md:flex-0 md:flex-col"
+        >
           <svg
             aria-label="Threads"
             className="mt-3 size-8 cursor-pointer transition-all hover:scale-110"
@@ -30,14 +46,16 @@ export default function Navigation() {
           {ROUTES.map((rou) => {
             return rou.children.map((child, index) => {
               const Icon = child.icon;
+              const isPrivate = child.private;
               return (
                 child.isShowInNav && (
                   <NavLink
                     className={
-                      "group hover:bg-[rgba(0,0,0,0.035)] m-1 flex h-10.5 flex-1 items-center justify-center rounded-xl border-0 text-[rgb(184,184,184)] md:mt-[6px] md:mb-[6px] md:h-15 md:w-12 md:w-15 md:flex-none md:gap-1"
+                      "group m-1 flex h-10.5 flex-1 items-center justify-center rounded-xl border-0 text-[rgb(184,184,184)] hover:bg-[rgba(0,0,0,0.035)] md:mt-[6px] md:mb-[6px] md:h-15 md:w-12 md:w-15 md:flex-none md:gap-1"
                     }
                     key={index}
                     to={child.path}
+                    onClick={(event) => handleUserAuth(event, isPrivate)}
                   >
                     <Icon
                       className={`size-6 group-[.active]:text-black ${
@@ -59,6 +77,7 @@ export default function Navigation() {
           </Button>
         </div>
       </nav>
+      <LoginActionModal open={open} setOpen={setOpen} />
     </div>
   );
 }

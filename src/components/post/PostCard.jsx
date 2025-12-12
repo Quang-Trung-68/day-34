@@ -17,19 +17,18 @@ import { Card } from "@/components/Common/ui/card";
 import ReplyModal from "@/components/Common/Modals/ReplyModal";
 import InteractionBar from "./InteractionBar";
 
-function PostCard({ userId, id, title, body, isPermitDetailPost }) {
+function PostCard({ user, id, content, isPermitDetailPost }) {
   const navigate = useNavigate();
   const handleToPostDetail = () => {
-    if (isPermitDetailPost) {
-      navigate(`/@${userId}/post/${id}`);
-    }
+    // if (isPermitDetailPost) {
+    //   navigate(`/@${userId}/post/${id}`);
+    // }
   };
 
   const handleToUserProfile = () => {
-    navigate(`/@${userId}`);
+    // navigate(`/@${userId}`);
   };
 
-  const username = "user_" + Math.floor(Math.random() * 100);
   const urlImage =
     "https://picsum.photos/600/400?random=" + Math.floor(Math.random() * 10);
 
@@ -50,7 +49,7 @@ function PostCard({ userId, id, title, body, isPermitDetailPost }) {
                   Math.floor(Math.random() * 10)
                 }
               />
-              <AvatarFallback>{username}</AvatarFallback>
+              <AvatarFallback>{user.username}</AvatarFallback>
             </Avatar>
           </div>
 
@@ -64,13 +63,13 @@ function PostCard({ userId, id, title, body, isPermitDetailPost }) {
                   className="username flex items-center gap-2"
                 >
                   <div className="cursor-pointer font-semibold hover:underline">
-                    {username}
+                    {user.username}
                   </div>
                   <div className="text-sm text-gray-500">{"10h"}</div>
                 </div>
-                {body && (
+                {content && (
                   <div onClick={handleToPostDetail} className="body mt-1">
-                    {title}: {body}
+                    {content}
                   </div>
                 )}
               </div>

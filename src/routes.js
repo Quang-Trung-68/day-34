@@ -35,7 +35,7 @@ export const ROUTES = [
         isShowInNav: true,
         icon: HouseIcon,
         isFill: true,
-        private: true,
+        private: false,
       },
       {
         path: PATHS.POST_DETAIL,
@@ -53,6 +53,7 @@ export const ROUTES = [
         isShowInNav: false,
         icon: null,
         isFill: null,
+        private: true,
       },
       {
         path: PATHS.FOR_YOU,
@@ -101,6 +102,7 @@ export const ROUTES = [
         isShowInNav: true,
         icon: HeartIcon,
         isFill: true,
+        private: true,
       },
       {
         path: PATHS.PROFILE,
@@ -109,6 +111,7 @@ export const ROUTES = [
         isShowInNav: true,
         icon: UserIcon,
         isFill: true,
+        private: true,
       },
     ],
   },
