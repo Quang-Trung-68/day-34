@@ -60,7 +60,7 @@ export default function Login() {
         <div className="text-left">
           <input
             type="text"
-            placeholder="Email..."
+            placeholder="Email"
             defaultValue={"dt1234@gmail.com"}
             {...register("login")}
             onChange={(e) => loginChange(e.target.value)}
@@ -78,7 +78,7 @@ export default function Login() {
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password..."
+              placeholder="Password"
               {...register("password")}
               onChange={(e) => passwordChange(e.target.value)}
               defaultValue={"12345678"}

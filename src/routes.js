@@ -23,6 +23,7 @@ import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
 import ForgotPassword from "@/pages/Auth/ForgotPassword";
 import VerifyEmail from "@/pages/Auth/VerifyEmail";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 export const ROUTES = [
   {
@@ -137,6 +138,13 @@ export const ROUTES = [
         path: PATHS.FORGOT_PASSWORD,
         title: "Forgot password",
         element: ForgotPassword,
+        isShowInNav: false,
+        private: false,
+      },
+      {
+        path: PATHS.RESET_PASSWORD,
+        title: "Reset password",
+        element: ResetPassword,
         isShowInNav: false,
         private: false,
       },
