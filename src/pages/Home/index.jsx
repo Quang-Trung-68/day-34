@@ -11,37 +11,42 @@ import { Button } from "@/components/Common/ui/button";
 import useAuth from "@/hooks/useAuth";
 import { Instagram } from "lucide-react";
 import PostCard from "@/components/post/PostCard";
+
+import useInfiniteScroll from "react-infinite-scroll-hook";
+
 import { useGetFeedQuery } from "@/services/post";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+
 
   const { user } = useAuth();
   const {
-    data: posts,
+    data: postsData,
     isLoading,
     isError,
-  } = useGetFeedQuery({ type: "for_you", page: 1, per_page: 10 });
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/posts",
-        );
-        if (!response.ok) throw new Error("Failed to fetch posts");
+    isFetching,
+  } = useGetFeedQuery({ type: "for_you", page, per_page: 10 });
 
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    setLoading(true);
-    fetchPosts();
-  }, []);
-  console.log(posts);
+  const posts = postsData?.data ?? [];
+  const pagination = postsData?.pagination;
+
+  const hasNextPage = pagination?.current_page < pagination?.last_page;
+
+  const loadMore = () => {
+    if (!isFetching && hasNextPage) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  const [sentryRef] = useInfiniteScroll({
+    loading: isLoading,
+    hasNextPage,
+    onLoadMore: loadMore,
+    rootMargin: "0px 0px 100px 0px",
+  });
+
+
   return (
     <div className="relative flex min-h-screen w-full">
       <div className="w-full">
@@ -81,8 +86,13 @@ export default function Home() {
         <div className="relative z-0 flex min-h-screen w-full flex-col bg-white">
           {posts &&
             posts.map((post) => (
-              <PostCard {...post} isPermitDetailPost={true} />
+              <PostCard key={post.id} {...post} isPermitDetailPost={true} />
             ))}
+          {hasNextPage && (
+            <div ref={sentryRef} style={{ textAlign: "center", padding: 16 }}>
+              {isLoading && "Loading more..."}
+            </div>
+          )}
         </div>
       </div>
     </div>

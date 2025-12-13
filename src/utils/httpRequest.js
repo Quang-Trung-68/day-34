@@ -35,7 +35,7 @@ async function sendRefreshToken(config, refreshToken) {
 }
 
 httpRequest.interceptors.response.use(
-  (response) => response.data,
+  (response) => response,
 
   async (error) => {
     const refreshToken = Cookies.get("refresh_token");

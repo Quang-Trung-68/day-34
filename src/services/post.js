@@ -6,15 +6,6 @@ export const postApi = createApi({
   baseQuery: baseQuery(),
   tagTypes: ["Post"],
   endpoints: (builder) => ({
-    // Register
-    register: builder.mutation({
-      query: (credentials) => ({
-        url: `/api/auth/register`,
-        method: "POST",
-        data: credentials,
-      }),
-      invalidatesTags: ["Post"],
-    }),
     // Get feed
     getFeed: builder.query({
       query: (params) => ({
@@ -22,7 +13,19 @@ export const postApi = createApi({
         method: "GET",
         params,
       }),
-      providesTags: ["Post"],
+      // tất cả page dùng chung cache
+      serializeQueryArgs: ({ endpointName }) => endpointName,
+
+      // merge data giữa các page
+      merge: (currentCache, response) => {
+        currentCache.data.push(...response.data);
+        currentCache.pagination = response.pagination;
+      },
+
+      // chỉ refetch khi page thay đổi
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page !== previousArg?.page;
+      },
     }),
   }),
 });

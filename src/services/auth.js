@@ -13,6 +13,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
+      transformResponse: (response) => response.data,
       invalidatesTags: ["Auth"],
     }),
     // Verify email
@@ -22,6 +23,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
+      transformResponse: (response) => response.data,
       invalidatesTags: ["Auth"],
     }),
 
@@ -32,6 +34,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
+      transformResponse: (response) => response.data,
       invalidatesTags: ["Auth"],
     }),
 
@@ -42,6 +45,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
+      transformResponse: (response) => response.data,
       invalidatesTags: ["Auth"],
     }),
 
@@ -52,6 +56,7 @@ export const authApi = createApi({
         method: "POST",
         data: credentials,
       }),
+      transformResponse: (response) => response.data,
       invalidatesTags: ["Auth"],
     }),
     // Reset password
@@ -61,6 +66,7 @@ export const authApi = createApi({
         method: "GET",
         params,
       }),
+      transformResponse: (response) => response.data,
       providesTags: ["Auth"],
     }),
 
@@ -70,6 +76,7 @@ export const authApi = createApi({
         url: `/api/auth/user`,
         method: "GET",
       }),
+      transformResponse: (response) => response.data,
       providesTags: ["Auth"],
     }),
   }),
