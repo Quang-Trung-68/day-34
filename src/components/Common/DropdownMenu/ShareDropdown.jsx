@@ -8,14 +8,43 @@ import {
 } from "../ui/dropdown-menu";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { CopyAsImageModal } from "@/components/post/CopyAsImageModal";
+import { GetEmbedCodeModal } from "@/components/post/GetEmbedCodeModal";
 
-const ShareDropdown = ({ children }) => {
+const ShareDropdown = ({
+  id,
+  user,
+  content,
+  updated_at,
+  likes_count,
+  replies_count,
+  reposts_and_quotes_count,
+  children,
+}) => {
   const handleCopyLink = () => {
     copyToClipboard("Copied a link");
   };
 
   const handleCopyAsImageModal = () => {
-    CopyAsImageModal.open();
+    CopyAsImageModal.open({
+      user,
+      content,
+      updated_at,
+      likes_count,
+      replies_count,
+      reposts_and_quotes_count,
+    });
+  };
+
+  const handleGetEmbedCodeModal = () => {
+    GetEmbedCodeModal.open({
+      id,
+      user,
+      content,
+      updated_at,
+      likes_count,
+      replies_count,
+      reposts_and_quotes_count,
+    });
   };
 
   return (
@@ -53,6 +82,7 @@ const ShareDropdown = ({ children }) => {
                 "w-66 rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
               showIcon={false}
+              onClick={handleGetEmbedCodeModal}
             >
               <span>Get embed code</span>
               <span>

@@ -11,6 +11,7 @@ import ReplyModal from "@/components/Common/Modals/QuickReplyModal";
 import InteractionBar from "./InteractionBar";
 import { formatTime } from "@/utils/formatTime";
 import QuickReplyModal from "@/components/Common/Modals/QuickReplyModal";
+import PostOptionsDropdown from "../Common/DropdownMenu/PostOptionsDropdown";
 
 function PostCard({
   user,
@@ -24,6 +25,8 @@ function PostCard({
   is_liked_by_auth,
   is_reposted_by_auth,
 }) {
+  const copyImageNodeRef = useRef();
+
   const navigate = useNavigate();
   const handleToPostDetail = () => {
     // if (isPermitDetailPost) {
@@ -47,7 +50,7 @@ function PostCard({
 
   return (
     <div className="flex flex-col border-2 p-3 md:p-6">
-      <div>
+      <div ref={copyImageNodeRef}>
         <div className="flex gap-2">
           <div
             onClick={handleToUserProfile}
@@ -78,7 +81,7 @@ function PostCard({
           </div>
 
           <div className="flex flex-1 flex-col gap-2">
-            <div className="content flex justify-between">
+            <div className="content flex items-start justify-between">
               <div
                 className={`flex-1 ${isPermitDetailPost ? "cursor-pointer" : "cursor-default"}`}
               >
@@ -99,9 +102,11 @@ function PostCard({
                   </div>
                 )}
               </div>
-              <div>
-                <MoreIcon className="size-5 text-gray-500" />
-              </div>
+              <PostOptionsDropdown>
+                <div className="flex size-8 items-center justify-center rounded-2xl hover:bg-gray-100">
+                  <MoreIcon className="size-7 cursor-pointer p-1 text-gray-500" />
+                </div>
+              </PostOptionsDropdown>
             </div>
 
             {urlImage && (
@@ -123,6 +128,7 @@ function PostCard({
                 toggleReplyModal={toggleReplyModal}
                 is_liked_by_auth={is_liked_by_auth}
                 is_reposted_by_auth={is_reposted_by_auth}
+                copyImageNodeRef={copyImageNodeRef}
               />
             </div>
           </div>

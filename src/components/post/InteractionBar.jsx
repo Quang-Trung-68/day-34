@@ -139,7 +139,7 @@ const InteractionBar = ({
       <div className="flex gap-4 text-gray-600">
         <div
           onClick={handleLikeCount}
-          className={`likes_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 hover:bg-gray-100 ${
+          className={`likes_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:bg-gray-100 ${
             interactionsCount.is_liked_by_auth
               ? "text-red-500"
               : "hover:bg-gray-100"
@@ -156,13 +156,13 @@ const InteractionBar = ({
             e.stopPropagation();
             toggleReplyModal();
           }}
-          className="replies_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 hover:bg-gray-100 hover:text-blue-500"
+          className="replies_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:bg-gray-100 hover:text-blue-500"
         >
           <ReplyIcon className="size-4.5" />
           <span className="text-sm">{interactionsCount.replies_count}</span>
         </div>
 
-        <div className="replies_count rounded-2xl hover:bg-gray-100">
+        <div className="replies_count rounded-2xl p-1 hover:bg-gray-100">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <span
@@ -193,7 +193,7 @@ const InteractionBar = ({
                 <span
                   className={`${interactionsCount.is_reposted_by_auth ? "text-red-500" : ""}`}
                 >
-                  <Repeat2Icon className="size-5" />
+                  <Repeat2Icon className="size-4.5" />
                 </span>
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
@@ -203,15 +203,22 @@ const InteractionBar = ({
                 onClick={handleQuote}
               >
                 <span>Quote</span>
-                <QuoteIcon className="size-5 font-normal" />
+                <QuoteIcon className="size-4.5 font-normal" />
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-1 hover:bg-gray-100 hover:text-purple-500">
-          {/* <span className="text-sm">{1}</span> */}
-          <ShareDropdown>
+        <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-1 px-2 hover:bg-gray-100 hover:text-purple-500">
+          <ShareDropdown
+            id={id}
+            user={user}
+            content={content}
+            updated_at={updated_at}
+            likes_count={likes_count}
+            replies_count={replies_count}
+            reposts_and_quotes_count={reposts_and_quotes_count}
+          >
             <SendIcon className="size-4.5" />
           </ShareDropdown>
         </div>
