@@ -7,7 +7,7 @@ export const postApi = createApi({
   tagTypes: ["Post"],
   endpoints: (builder) => ({
     // Get feed
-    
+
     getFeed: builder.query({
       query: ({ refreshKey, ...params }) => ({
         url: `/api/posts/feed`,
@@ -53,10 +53,15 @@ export const postApi = createApi({
         url: `/api/posts/${id}/like`,
         method: "POST",
       }),
-      transformResponse: (response) => response,
-      invalidatesTags: ["Post"],
+    }),
+    repost: builder.mutation({
+      query: ({ id }) => ({
+        url: `/api/posts/${id}/repost`,
+        method: "POST",
+      }),
     }),
   }),
 });
 
-export const { useGetFeedQuery, useLikePostMutation } = postApi;
+export const { useGetFeedQuery, useLikePostMutation, useRepostMutation } =
+  postApi;

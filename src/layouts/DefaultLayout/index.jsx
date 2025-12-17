@@ -9,7 +9,7 @@ export default function DefaultLayout() {
   return (
     <div className="relative flex min-h-screen justify-center">
       <div className="flex w-full justify-center gap-3">
-        <div className="w-full max-w-160 min-w-0">
+        <div className="z-10 w-full max-w-160 min-w-0">
           <Outlet />
         </div>
         {!user && !isLoading && (

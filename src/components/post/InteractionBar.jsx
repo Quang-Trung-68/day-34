@@ -1,26 +1,42 @@
-import { useLikePostMutation } from "@/services/postService";
+import { useLikePostMutation, useRepostMutation } from "@/services/postService";
 import {
   Heart as LikeIcon,
   MessageCircle as ReplyIcon,
   Repeat2 as Repeat2Icon,
   Send as SendIcon,
+  MessageSquareQuoteIcon as QuoteIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+} from "../Common/ui/dropdown-menu";
+
+import { QuoteModal } from "./QuoteModal";
+import ShareDropdown from "../Common/DropdownMenu/ShareDropdown";
 
 const InteractionBar = ({
   id,
+  user,
+  content,
+  updated_at,
   toggleReplyModal,
   likes_count,
   replies_count,
   reposts_and_quotes_count,
   is_liked_by_auth,
+  is_reposted_by_auth,
 }) => {
-  const [likePostApi, { isLoading }] = useLikePostMutation();
+  const [likePostApi, { isLoading: isLoadingLike }] = useLikePostMutation();
+  const [repostApi, { isLoading: isLoadingRepost }] = useRepostMutation();
   const [interactionsCount, setInteractionsCount] = useState({
     is_liked_by_auth,
     likes_count,
     replies_count,
     reposts_and_quotes_count,
+    is_reposted_by_auth,
   });
 
   // Sync state with props when data is refetched or changes
@@ -31,12 +47,19 @@ const InteractionBar = ({
       likes_count,
       replies_count,
       reposts_and_quotes_count,
+      is_reposted_by_auth,
     }));
-  }, [is_liked_by_auth, likes_count, replies_count, reposts_and_quotes_count]);
+  }, [
+    is_liked_by_auth,
+    likes_count,
+    replies_count,
+    reposts_and_quotes_count,
+    is_reposted_by_auth,
+  ]);
 
   const handleLikeCount = async (e) => {
     e.stopPropagation(); // Prevent card click
-    if (isLoading) return; // Prevent spamming
+    if (isLoadingLike) return; // Prevent spamming
 
     // Optimistic Update
     const isLiked = interactionsCount.is_liked_by_auth;
@@ -70,15 +93,56 @@ const InteractionBar = ({
     }
   };
 
+  const handleRepostCount = async (e) => {
+    e.stopPropagation(); // Prevent card click
+    if (isLoadingRepost) return; // Prevent spamming
+
+    // Optimistic Update
+    const isReposted = interactionsCount.is_reposted_by_auth;
+    const newIsReposted = !isReposted;
+    const newCount =
+      interactionsCount.reposts_and_quotes_count + (newIsReposted ? 1 : -1);
+
+    setInteractionsCount({
+      ...interactionsCount,
+      is_reposted_by_auth: newIsReposted,
+      reposts_and_quotes_count: newCount,
+    });
+
+    try {
+      const response = await repostApi({ id });
+      if (!response.data.success) {
+        // Revert on failure (optional, depending on API behavior, usually throws error or returns success:false)
+        setInteractionsCount({
+          ...interactionsCount,
+          is_reposted_by_auth: isReposted,
+          reposts_and_quotes_count: interactionsCount.reposts_and_quotes_count,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      // Revert on error
+      setInteractionsCount({
+        ...interactionsCount,
+        is_reposted_by_auth: isReposted,
+        reposts_and_quotes_count: interactionsCount.reposts_and_quotes_count,
+      });
+    }
+  };
+
+  const handleQuote = () => {
+    QuoteModal.open({ user, content, updated_at });
+  };
+
   return (
     <>
       <div className="flex gap-4 text-gray-600">
         <div
           onClick={handleLikeCount}
-          className={`likes_count flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 ${
+          className={`likes_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 hover:bg-gray-100 ${
             interactionsCount.is_liked_by_auth
               ? "text-red-500"
-              : "hover:text-red-500"
+              : "hover:bg-gray-100"
           }`}
         >
           <LikeIcon
@@ -92,22 +156,64 @@ const InteractionBar = ({
             e.stopPropagation();
             toggleReplyModal();
           }}
-          className="replies_count flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 hover:text-blue-500"
+          className="replies_count flex cursor-pointer items-center gap-1 rounded-2xl p-1 hover:bg-gray-100 hover:text-blue-500"
         >
           <ReplyIcon className="size-4.5" />
           <span className="text-sm">{interactionsCount.replies_count}</span>
         </div>
 
-        <div className="replies_count flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 hover:text-green-500">
-          <Repeat2Icon className="size-4.5" />
-          <span className="text-sm">
-            {interactionsCount.reposts_and_quotes_count}
-          </span>
+        <div className="replies_count rounded-2xl hover:bg-gray-100">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <span
+                className={`flex cursor-pointer items-center gap-1 rounded-2xl p-1 ${
+                  interactionsCount.is_reposted_by_auth
+                    ? "text-green-500"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <Repeat2Icon className="size-4.5" />
+                <span className="text-sm">
+                  {interactionsCount.reposts_and_quotes_count}
+                </span>
+              </span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className={"rounded-3xl border-2 p-2"}>
+              <DropdownMenuCheckboxItem
+                onClick={handleRepostCount}
+                className={
+                  "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
+                }
+              >
+                {interactionsCount.is_reposted_by_auth ? (
+                  <span className="text-red-500">Remove</span>
+                ) : (
+                  <span>Reposts</span>
+                )}
+                <span
+                  className={`${interactionsCount.is_reposted_by_auth ? "text-red-500" : ""}`}
+                >
+                  <Repeat2Icon className="size-5" />
+                </span>
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                className={
+                  "flex h-12 w-56 cursor-pointer items-center justify-between rounded-3xl p-0 px-3.5 py-3 text-[15px] font-semibold"
+                }
+                onClick={handleQuote}
+              >
+                <span>Quote</span>
+                <QuoteIcon className="size-5 font-normal" />
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-2 hover:bg-gray-100 hover:text-purple-500">
-          <SendIcon className="size-4.5" />
+        <div className="flex cursor-pointer items-center gap-1 rounded-2xl p-1 hover:bg-gray-100 hover:text-purple-500">
           {/* <span className="text-sm">{1}</span> */}
+          <ShareDropdown>
+            <SendIcon className="size-4.5" />
+          </ShareDropdown>
         </div>
       </div>
     </>

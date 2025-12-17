@@ -9,11 +9,13 @@ import {
   MapPin,
   AlignLeft,
   MoreHorizontal,
-  Copy, // Icon giống biểu tượng 2 thẻ chồng lên nhau
-  Hash, // Icon dấu thăng
+  Copy,
+  Hash,
+  Grid3x3,
 } from "lucide-react";
 import { Button } from "@/components/Common/ui/button";
 import { useState } from "react";
+import ReplyOptionsDropdown from "../../DropdownMenu/ReplyOptionsDropdown";
 
 const Modal = NiceModal.create(
   ({ username = "dqt_2309", onPost, onCancel }) => {
@@ -37,10 +39,14 @@ const Modal = NiceModal.create(
       }
     };
 
+    const [replyQuote, setReplyQuote] = useState(false);
+    const [reviewApprove, setReviewApprove] = useState(false);
+
     return (
       <Dialog open={modal.visible} onOpenChange={handleCancel}>
         {/* max-w-lg để kích thước giống mobile/modal nhỏ gọn hơn */}
         <DialogContent
+          aria-describedby={undefined}
           showCloseButton={false}
           className="max-w-[600px] gap-0 overflow-hidden rounded-2xl border-none bg-white p-0 shadow-xl"
         >
@@ -48,7 +54,7 @@ const Modal = NiceModal.create(
           <div className="flex items-center justify-between px-5 py-4">
             <button
               onClick={handleCancel}
-              className="text-[16px] text-black hover:opacity-70"
+              className="cursor-pointer text-[16px] text-black hover:opacity-70"
             >
               Cancel
             </button>
@@ -177,19 +183,29 @@ const Modal = NiceModal.create(
 
           {/* --- FOOTER --- */}
           <div className="mt-2 flex items-center justify-between px-5 py-4">
-            <button className="text-[15px] font-normal text-gray-400 hover:text-gray-600">
-              Reply options
-            </button>
+            <ReplyOptionsDropdown
+              replyQuote={replyQuote}
+              setReplyQuote={setReplyQuote}
+              reviewApprove={reviewApprove}
+              setReviewApprove={setReviewApprove}
+            >
+              <button
+                className={`flex cursor-pointer items-center gap-2 text-sm font-semibold ${reviewApprove ? "text-gray-900" : "text-gray-400"} `}
+              >
+                <Grid3x3 className="h-4 w-4" />
+                <span>Reply options</span>
+              </button>
+            </ReplyOptionsDropdown>
 
             <Button
               onClick={handlePost}
               disabled={!content.trim()}
-              className={`rounded-full px-5 py-5 text-[15px] font-semibold transition-all ${
+              className={`cursor-pointer rounded-full px-5 py-5 text-[15px] font-semibold transition-all ${
                 content.trim()
-                  ? "bg-black text-white hover:bg-gray-800"
-                  : "border border-gray-100 bg-gray-100 text-gray-400 hover:bg-gray-100"
+                  ? "bg-black text-white"
+                  : "border border-gray-100 bg-gray-600 hover:bg-gray-600"
               } `}
-              variant="ghost" // Dùng ghost để custom style dễ hơn
+              variant="ghost"
             >
               Post
             </Button>

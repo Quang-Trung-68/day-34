@@ -1,5 +1,9 @@
 import React, { useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/Common/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/Common/ui/avatar";
 import {
   Heart as LikeIcon,
   MessageCircle as ReplyIcon,
@@ -8,7 +12,7 @@ import {
   Send as SendIcon,
 } from "lucide-react";
 import { Card } from "@/components/Common/ui/card";
-import ReplyModal from "@/components/Common/Modals/ReplyModal";
+import ReplyModal from "@/components/Common/Modals/QuickReplyModal";
 
 function CommentItem({ postId, userId, id, name, body }) {
   // const navigate = useNavigate();

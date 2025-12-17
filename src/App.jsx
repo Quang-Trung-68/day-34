@@ -2,12 +2,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "@/App.css";
 import { ROUTES } from "@/routes";
 import { ToastContainer } from "react-toastify";
+import { Toaster } from "sonner";
 import ProtectedRoute from "@/components/Features/auth/ProtectedRoute";
 
 function App() {
   return (
     <>
       <ToastContainer />
+      <Toaster richColors position="top-right" />
       <Router>
         <Routes>
           {ROUTES.map((router, index) => {

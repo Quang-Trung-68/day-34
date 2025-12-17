@@ -1,15 +1,16 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/components/Common/ui/avatar";
-import { Ellipsis as MoreIcon } from "lucide-react";
+import { Ellipsis as MoreIcon, CirclePlus as FollowIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import ReplyModal from "@/components/Common/Modals/ReplyModal";
+import ReplyModal from "@/components/Common/Modals/QuickReplyModal";
 import InteractionBar from "./InteractionBar";
 import { formatTime } from "@/utils/formatTime";
+import QuickReplyModal from "@/components/Common/Modals/QuickReplyModal";
 
 function PostCard({
   user,
@@ -21,6 +22,7 @@ function PostCard({
   reposts_and_quotes_count,
   updated_at,
   is_liked_by_auth,
+  is_reposted_by_auth,
 }) {
   const navigate = useNavigate();
   const handleToPostDetail = () => {
@@ -37,24 +39,42 @@ function PostCard({
     "https://picsum.photos/600/400?random=" + Math.floor(Math.random() * 10);
 
   const ReplyModalRef = useRef(null);
+  const [isReplyOpen, setIsReplyOpen] = useState(false);
   const toggleReplyModal = () => {
     ReplyModalRef.current?.toggle();
+    setIsReplyOpen((prev) => !prev);
   };
 
   return (
     <div className="flex flex-col border-2 p-3 md:p-6">
       <div>
         <div className="flex gap-2">
-          <div onClick={handleToUserProfile}>
-            <Avatar className="size-9">
-              <AvatarImage
-                src={
-                  "https://i.pravatar.cc/150?img=" +
-                  Math.floor(Math.random() * 10)
-                }
-              />
-              <AvatarFallback>{user.username}</AvatarFallback>
-            </Avatar>
+          <div
+            onClick={handleToUserProfile}
+            className="flex flex-col items-center gap-2"
+          >
+            <div className="relative">
+              <Avatar className="size-9 cursor-pointer">
+                <AvatarImage
+                  src={
+                    "https://i.pravatar.cc/150?img=" +
+                    Math.floor(Math.random() * 10)
+                  }
+                />
+                <AvatarFallback>{user.username}</AvatarFallback>
+              </Avatar>
+              <div
+                className="absolute -right-1 -bottom-1 flex cursor-pointer items-center justify-center rounded-full border-2 border-white bg-black p-[2px] text-white hover:bg-gray-800"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // TODO: Implement follow/unfollow logic
+                }}
+              >
+                <FollowIcon size={10} strokeWidth={4} />
+              </div>
+            </div>
+
+            {isReplyOpen && <div className="w-[3px] flex-1 bg-gray-200" />}
           </div>
 
           <div className="flex flex-1 flex-col gap-2">
@@ -94,18 +114,27 @@ function PostCard({
             <div>
               <InteractionBar
                 id={id}
+                user={user}
+                content={content}
+                updated_at={updated_at}
                 likes_count={likes_count}
                 replies_count={replies_count}
                 reposts_and_quotes_count={reposts_and_quotes_count}
                 toggleReplyModal={toggleReplyModal}
                 is_liked_by_auth={is_liked_by_auth}
+                is_reposted_by_auth={is_reposted_by_auth}
               />
             </div>
           </div>
         </div>
       </div>
 
-      <ReplyModal ref={ReplyModalRef} />
+      <QuickReplyModal
+        user={user}
+        content={content}
+        updated_at={updated_at}
+        ref={ReplyModalRef}
+      />
     </div>
   );
 }
