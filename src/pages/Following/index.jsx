@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import {
   Avatar,
   AvatarFallback,
@@ -9,9 +8,7 @@ import { Input } from "@/components/Common/ui/input";
 import { Button } from "@/components/Common/ui/button";
 import useAuth from "@/hooks/useAuth";
 import PostCard from "@/components/post/PostCard";
-
 import useInfiniteScroll from "react-infinite-scroll-hook";
-
 import { useGetFeedQuery } from "@/services/postService";
 import { Spinner } from "@/components/Common/ui/spinner";
 import { CreatePostModal } from "@/components/post/CreatePostModal";
@@ -20,7 +17,7 @@ import EmptyState from "@/components/Common/EmptyState";
 
 import PostCardSkeleton from "@/components/post/PostCardSkeleton";
 
-export default function Home() {
+export default function Following() {
   const [page, setPage] = useState(1);
   const [refreshKey] = useState(() => Date.now());
 
@@ -29,7 +26,7 @@ export default function Home() {
     data: postsData,
     isLoading,
     isFetching,
-  } = useGetFeedQuery({ type: "for_you", page, per_page: 10, refreshKey });
+  } = useGetFeedQuery({ type: "following", page, per_page: 10, refreshKey });
 
   const onHandlePost = () => {
     CreatePostModal.open();
@@ -53,17 +50,11 @@ export default function Home() {
     rootMargin: "0px 0px 800px 0px",
   });
 
-  // Navigation page
-  // const handleToForYou = () => {};
-  // const handleToFollowing = () => {};
-  // const handleToGhostPosts = () => {};
-
   return (
     <div className="relative flex min-h-screen w-full">
       <div className="w-full">
         {/* Sticky Header Container */}
         <div className="sticky top-0 z-50">
-          {/* Visible Header Navigation */}
           {/* Visible Header Navigation */}
           {user ? (
             <FeedHeader />
@@ -132,7 +123,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Main Content - Flows naturally with window scroll */}
+        {/* Main Content */}
         <div className="relative z-0 flex min-h-screen w-full flex-col bg-white">
           {isLoading && posts.length === 0 ? (
             Array.from({ length: 5 }).map((_, index) => (
@@ -140,8 +131,8 @@ export default function Home() {
             ))
           ) : posts.length === 0 ? (
             <EmptyState
-              title="No posts yet"
-              description="When someone you follow posts, their posts will appear here."
+              title="No following posts yet"
+              description="Follow people to see their posts in this feed. Keep track of what matters to you."
             />
           ) : (
             posts.map((post) => (

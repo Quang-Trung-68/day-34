@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import PostDetail from "@/pages/DefaultLayout/PostDetail";
 import UserProfile from "@/pages/DefaultLayout/UserProfile";
-import Following from "@/pages/DefaultLayout/Following/Following";
+import Following from "@/pages/Following";
 import GhostPosts from "@/pages/DefaultLayout/GhostPosts";
 import ForYou from "@/pages/DefaultLayout/ForYou/ForYou";
 import Login from "@/pages/Auth/Login";
