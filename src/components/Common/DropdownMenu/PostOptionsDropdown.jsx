@@ -6,7 +6,6 @@ import {
   DropdownMenuSeparator,
 } from "../ui/dropdown-menu";
 import { useState } from "react";
-import { Switch } from "../ui/switch";
 import {
   BookmarkCheck,
   BookmarkX,
@@ -14,16 +13,48 @@ import {
   EyeOff,
   Link,
   MessageCircleWarning,
-  Save,
   UserLock,
   UserRoundMinus,
   UserRoundX,
 } from "lucide-react";
-import { Separator } from "@radix-ui/react-dropdown-menu";
+import {
+  useMuteMutation,
+  useSaveMutation,
+  useUnmuteMutation,
+} from "@/services/postService";
 
-const PostOptionsDropdown = ({ id, children }) => {
-  const [isSaved, setIsSaved] = useState(false);
+const PostOptionsDropdown = ({
+  id,
+  userId,
+  is_saved_by_auth,
+  children,
+  onMuteSuccess,
+}) => {
+  const [isSaved, setIsSaved] = useState(is_saved_by_auth);
   const [isInterested, setIsInterested] = useState(false);
+  // id: this is id of post that we can interaction
+  const [saveApi, { isLoading: isSaveLoading }] = useSaveMutation();
+
+  const [muteApi, { isLoading: isMuteLoading }] = useMuteMutation();
+
+  const handleToggleSave = async () => {
+    const previousState = isSaved;
+    setIsSaved(!isSaved);
+    try {
+      await saveApi({ id }).unwrap();
+    } catch (error) {
+      setIsSaved(previousState);
+    }
+  };
+
+  const handleMute = async () => {
+    try {
+      await muteApi({ userId }).unwrap();
+      onMuteSuccess?.();
+    } catch (error) {
+      console.error("Mute failed:", error);
+    }
+  };
 
   return (
     <>
@@ -35,9 +66,10 @@ const PostOptionsDropdown = ({ id, children }) => {
             className={
               "flex w-55 items-center justify-between rounded-xl px-3 py-3.5 text-[15px] font-semibold"
             }
-            onCheckedChange={setIsSaved}
+            onCheckedChange={handleToggleSave}
+            disabled={isSaveLoading}
           >
-            <span>Save</span>
+            <span>{!isSaved ? "Save" : "Unsave"}</span>
             <span className="flex items-center justify-center">
               {!isSaved ? (
                 <BookmarkCheck className="size-5" />
@@ -67,6 +99,8 @@ const PostOptionsDropdown = ({ id, children }) => {
             className={
               "flex w-55 items-center justify-between rounded-xl px-3 py-3.5 text-[15px] font-semibold"
             }
+            onSelect={handleMute}
+            disabled={isMuteLoading}
           >
             <span>Mute</span>
             <span className="flex items-center justify-center">

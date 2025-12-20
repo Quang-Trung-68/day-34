@@ -2,9 +2,9 @@ import { PATHS } from "@/configs/paths.js";
 import { LAYOUTS } from "@/configs/layouts.js";
 
 import Home from "@/pages/Home";
-import Search from "@pages/DefaultLayout/Search";
+import Search from "@/pages/Search";
 import Create from "@components/Features/Create";
-import Activity from "@/pages/DefaultLayout/Activity";
+import Activity from "@/pages/Activity";
 import NotFound from "@pages/NoLayout/NotFound";
 import {
   Heart as HeartIcon,

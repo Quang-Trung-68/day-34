@@ -60,8 +60,35 @@ export const postApi = createApi({
         method: "POST",
       }),
     }),
+    save: builder.mutation({
+      query: ({ id }) => ({
+        url: `/api/posts/${id}/save`,
+        method: "POST",
+      }),
+    }),
+    mute: builder.mutation({
+      query: ({ userId }) => ({
+        url: `/api/users/${userId}/mute`,
+        method: "POST",
+      }),
+    }),
+    unmute: builder.mutation({
+      query: ({ userId }) => ({
+        url: `/api/users/${userId}/mute`,
+        method: "POST",
+        data: {
+          _method: "DELETE",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetFeedQuery, useLikePostMutation, useRepostMutation } =
-  postApi;
+export const {
+  useGetFeedQuery,
+  useLikePostMutation,
+  useRepostMutation,
+  useSaveMutation,
+  useMuteMutation,
+  useUnmuteMutation,
+} = postApi;

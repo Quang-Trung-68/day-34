@@ -11,10 +11,12 @@ import InteractionBar from "./InteractionBar";
 import { formatTime } from "@/utils/formatTime";
 import QuickReplyModal from "@/components/Common/Modals/QuickReplyModal";
 import PostOptionsDropdown from "../Common/DropdownMenu/PostOptionsDropdown";
+import { useUnmuteMutation } from "@/services/postService";
 
 function PostCard({
   user,
   id,
+  user_id,
   content,
   isPermitDetailPost,
   likes_count,
@@ -23,8 +25,12 @@ function PostCard({
   updated_at,
   is_liked_by_auth,
   is_reposted_by_auth,
+  is_saved_by_auth,
 }) {
   const navigate = useNavigate();
+  const [isMuted, setIsMuted] = useState(false);
+  const [unmuteApi, { isLoading: isUnmuteLoading }] = useUnmuteMutation();
+
   const handleToPostDetail = () => {
     // if (isPermitDetailPost) {
     //   navigate(`/@${userId}/post/${id}`);
@@ -45,8 +51,39 @@ function PostCard({
     setIsReplyOpen((prev) => !prev);
   };
 
+  const handleMuteSuccess = () => {
+    setIsMuted(true);
+  };
+
+  const handleUnmute = async () => {
+    try {
+      await unmuteApi({ userId: user_id }).unwrap();
+      setIsMuted(false);
+    } catch (error) {
+      console.error("Unmute failed:", error);
+    }
+  };
+
+  if (isMuted) {
+    return (
+      <div className="m-4 flex items-center justify-between rounded-2xl bg-gray-100 p-4 text-sm text-gray-500">
+        <span>
+          Posts from {user.username} are muted. You can manage who you mute in
+          settings on the mobile app.
+        </span>
+        <button
+          onClick={handleUnmute}
+          disabled={isUnmuteLoading}
+          className="cursor-pointer rounded-full border border-0 px-4 py-1 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
+        >
+          {isUnmuteLoading ? "Undoing..." : "Undo"}
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col border-2 p-3 md:p-6">
+    <div className="flex flex-col border-t-2 p-3 md:p-6">
       <div>
         <div className="flex gap-2">
           <div
@@ -99,7 +136,12 @@ function PostCard({
                   </div>
                 )}
               </div>
-              <PostOptionsDropdown>
+              <PostOptionsDropdown
+                id={id}
+                userId={user_id}
+                is_saved_by_auth={is_saved_by_auth}
+                onMuteSuccess={handleMuteSuccess}
+              >
                 <div className="flex size-8 items-center justify-center rounded-2xl hover:bg-gray-100">
                   <MoreIcon className="size-7 cursor-pointer p-1 text-gray-500" />
                 </div>

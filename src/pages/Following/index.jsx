@@ -51,10 +51,11 @@ export default function Following() {
   });
 
   return (
-    <div className="relative flex min-h-screen w-full">
-      <div className="w-full">
+    <div className="relative flex min-h-screen w-full flex-col bg-[rgb(250,250,250)]">
+      <div className="flex w-full flex-col">
         {/* Sticky Header Container */}
-        <div className="sticky top-0 z-50">
+        {/* The entire block is sticky to create the 'Fixed Frame' effect while keeping native scroll */}
+        <div className="sticky top-0 z-50 bg-[#FAFAFA]">
           {/* Visible Header Navigation */}
           {user ? (
             <FeedHeader />
@@ -77,7 +78,7 @@ export default function Following() {
               }}
             />
           </div>
-          <div className="absolute top-full right-6 left-6 h-1 bg-[#FAFAFA]" />
+          <div className="absolute top-full right-6 left-6 h-1 bg-transparent" />
           <div className="pointer-events-none absolute top-full right-0 h-6 w-6">
             <div
               className="h-full w-full"
@@ -89,62 +90,69 @@ export default function Following() {
           </div>
         </div>
 
-        {/* Avatar + post button if logged in */}
-        {user && (
-          <div className="flex items-center justify-between border-2 bg-white p-5">
-            <div className="flex flex-1 items-center gap-2">
-              <div>
-                <Avatar className={"size-9"}>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@dqt_2309"
-                  />
-                  <AvatarFallback>QT</AvatarFallback>
-                </Avatar>
-              </div>
-              <div onClick={onHandlePost} className="flex-1">
-                <Input
-                  type={"text"}
-                  className={
-                    "border-0 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
-                  }
-                  placeholder={`What's news ?`}
-                />
-              </div>
-            </div>
-            <div onClick={onHandlePost}>
-              <Button
-                variant="outline"
-                className={"cursor-pointer rounded-2xl font-semibold"}
-              >
-                Post
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Main Content */}
+        {/* Main Content - Flows naturally with window scroll */}
         <div className="relative z-0 flex min-h-screen w-full flex-col bg-white">
-          {isLoading && posts.length === 0 ? (
-            Array.from({ length: 5 }).map((_, index) => (
-              <PostCardSkeleton key={index} />
-            ))
-          ) : posts.length === 0 ? (
-            <EmptyState
-              title="No following posts yet"
-              description="Follow people to see their posts in this feed. Keep track of what matters to you."
-            />
-          ) : (
-            posts.map((post) => (
-              <PostCard key={post.id} {...post} isPermitDetailPost={true} />
-            ))
+          {/* Left Border Line */}
+          <div className="bg-border absolute top-0 bottom-0 left-0 z-10 w-px" />
+          {/* Right Border Line */}
+          <div className="bg-border absolute top-0 bottom-0 right-0 z-10 w-px" />
+
+          {/* Avatar + post button if logged in */}
+          {user && (
+            <div className="flex items-center justify-between border-2 bg-white p-5">
+              <div className="flex flex-1 items-center gap-2">
+                <div>
+                  <Avatar className={"size-9"}>
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@dqt_2309"
+                    />
+                    <AvatarFallback>QT</AvatarFallback>
+                  </Avatar>
+                </div>
+                <div onClick={onHandlePost} className="flex-1">
+                  <Input
+                    type={"text"}
+                    className={
+                      "border-0 p-0.5 text-gray-500 shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none"
+                    }
+                    placeholder={`What's news ?`}
+                  />
+                </div>
+              </div>
+              <div onClick={onHandlePost}>
+                <Button
+                  variant="outline"
+                  className={"cursor-pointer rounded-2xl font-semibold"}
+                >
+                  Post
+                </Button>
+              </div>
+            </div>
+          )}
+
+          <div className="relative flex flex-col">
+            {isLoading && posts.length === 0 ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <PostCardSkeleton key={index} />
+              ))
+            ) : posts.length === 0 ? (
+              <EmptyState
+                title="No following posts yet"
+                description="Follow people to see their posts in this feed. Keep track of what matters to you."
+              />
+            ) : (
+              posts.map((post) => (
+                <PostCard key={post.id} {...post} isPermitDetailPost={true} />
+              ))
+            )}
+          </div>
+          {hasNextPage && (
+            <div ref={sentryRef} className="flex justify-center p-4">
+              {isFetching && <Spinner />}
+            </div>
           )}
         </div>
-        {hasNextPage && (
-          <div ref={sentryRef} className="flex justify-center p-4">
-            {isFetching && <Spinner />}
-          </div>
-        )}
       </div>
     </div>
   );
