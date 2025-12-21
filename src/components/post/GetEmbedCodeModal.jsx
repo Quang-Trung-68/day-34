@@ -70,7 +70,7 @@ const Modal = NiceModal.create(
 
     useEffect(() => {
       setEmbedCodeUrl(`
-      <iframe src="${location.origin + "/" + user.username + "/post/" + id + "/embed"}></iframe>`);
+      <iframe src="${location.origin + "/" + user.username + "/post/" + id + "/embed"}"></iframe>`);
     }, [user.username, id]);
 
     const handleCancel = () => {

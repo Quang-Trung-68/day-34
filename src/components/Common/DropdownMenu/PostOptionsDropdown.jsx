@@ -33,6 +33,7 @@ import { BlockUserModal } from "@/components/post/BlockUserModal";
 import { ReportPostModal } from "@/components/post/ReportPostModal";
 import { notifySooner } from "@/utils/notifySooner";
 import useAuth from "@/hooks/useAuth";
+import { copyToClipboard } from "@/utils/copyToClipboard";
 
 const PostOptionsDropdown = ({
   id,
@@ -129,6 +130,11 @@ const PostOptionsDropdown = ({
     });
   };
 
+  const handleCopyLink = () => {
+    const postLink = `${location.origin}/@${username}/post/${id}`;
+    copyToClipboard(postLink);
+  };
+
   if (!isAuth)
     return (
       <>
@@ -223,6 +229,7 @@ const PostOptionsDropdown = ({
               className={
                 "flex w-55 items-center justify-between rounded-xl px-3 py-3.5 text-[15px] font-semibold"
               }
+              onSelect={handleCopyLink}
             >
               <span>Copy link</span>
               <span className="flex items-center justify-center">
@@ -302,6 +309,7 @@ const PostOptionsDropdown = ({
             className={
               "flex w-55 items-center justify-between rounded-xl px-3 py-3.5 text-[15px] font-semibold"
             }
+            onSelect={handleCopyLink}
           >
             <span>Copy link</span>
             <span className="flex items-center justify-center">

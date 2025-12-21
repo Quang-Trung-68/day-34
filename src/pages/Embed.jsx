@@ -96,6 +96,8 @@ function Embed() {
                 replies_count={replies_count}
                 reposts_and_quotes_count={reposts_and_quotes_count}
               />
+            </div>
+            <div className="mt-2 flex items-center justify-between">
               {/* Watermark/Logo */}
               <div className="ml-auto flex items-center justify-between gap-2 rounded-2xl bg-gray-100 px-3 py-2 text-[12px] font-semibold">
                 <span>View on Threads</span>

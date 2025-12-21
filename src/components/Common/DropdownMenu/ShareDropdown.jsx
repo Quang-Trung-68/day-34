@@ -21,7 +21,8 @@ const ShareDropdown = ({
   children,
 }) => {
   const handleCopyLink = () => {
-    copyToClipboard("Copied a link");
+    const postLink = `${location.origin}/@${user.username}/post/${id}`;
+    copyToClipboard(postLink);
   };
 
   const handleCopyAsImageModal = () => {
